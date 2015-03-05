@@ -94,7 +94,8 @@ class Alarm(object):
 
 
 class AlarmScheduler(object):
-    def __init__(self):
+    def __init__(self, alarm_function):
+        self._alarm_function = alarm_function
         self._api_interval = 15
         self._alarms = []
         self._alarm_stack = []
@@ -123,6 +124,7 @@ class AlarmScheduler(object):
             if len(self._alarm_stack) > 0:
                 if self._alarm_stack[0] == now:
                     print "ALARM!"
+                    self._alarm_function()
                     self._alarm_stack.pop(0)
 
             time.sleep(0.5)
