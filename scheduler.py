@@ -3,6 +3,7 @@ import requests
 import hmac
 import json
 import arrow
+import auth
 
 BASE = "http://alarm.larsendt.com"
 DAYS = 60 * 60 * 24
@@ -18,7 +19,8 @@ class HTTPException(Exception):
 
 
 def api_get(url, params):
-    r = requests.get(BASE+url, data=params)
+    headers = {"Authorization": auth.make_hmac(params)}
+    r = requests.get(BASE+url, data=params, headers=headers)
     if r.status_code != 200:
         raise HTTPException("Status was not 200! (%s)" % r.status_code)
 
